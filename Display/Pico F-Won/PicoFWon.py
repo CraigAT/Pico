@@ -6,8 +6,11 @@ import utime
 
 
 # Sets up a handy function we can call to clear the screen
-def clear():  
-    display.set_pen(0, 0, 0)
+def clear(background="black"):
+    if lower(background) = "white"
+        display.set_pen(255, 255, 255)
+    else:
+        display.set_pen(0, 0, 0)
     display.clear()
     display.update()
 
@@ -19,11 +22,7 @@ def setup_screen():
 
 # Draw the intro screen
 def intro():
-    clear()
-    # draws a white background for the text
-    display.set_pen(255, 255, 255)
-    display.rectangle(1, 1, 240, 135)
-    # writes the reading as text in the white rectangle
+    clear("white")
     
     pico_x_base = 70  # 93 works well for centre
     pico_y_base = 20
@@ -46,9 +45,22 @@ def intro():
     display.update()
 
 
+def menu():
+    clear()
+    display.set_pen(255, 255, 255)
+    display.text("Start Game", 120, 110, 240, 2)
+    display.update()
+    menu_loop = true
+    while menu_loop = true
+        utime.sleep(0.01)
+        if display.is_pressed(display.BUTTON_A):
+            break
+
 ## Main Program
 
-# Get screen dimensions
-setup_screen()
-intro()
-clear()
+game_loop = true
+while game_loop = true
+    setup_screen()
+    intro()
+    clear()
+    utime.sleep(1)
