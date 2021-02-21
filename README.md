@@ -1,8 +1,13 @@
 # Pico
 A few projects for the Raspberry Pi Pico microcontroller
 
+---
+
 ## Pico F-Won
 
+A simple game using the Pico Display
+
+---
 
 
 ## Additional Useful Links:
