@@ -6,6 +6,70 @@ import utime
 import math
 import random
 
+# Tracks
+track_list = {
+    "Spa" : [[5,  ">"],
+        [15, "<"],
+        [17, ">"],
+        [19, "<"],
+        [32, ">"],
+        [35, "<"],
+        [37, ">"],
+        [42, ">"],
+        [47, "<"],
+        [55, "<"],
+        [58, "<"],
+        [63, ">"],
+        [66, "<"],
+        [70, ">"],
+        [75, ">"],
+        [81, "<"],
+        [86, "<"],
+        [93, ">"],
+        [96, "<"],
+        [102, "F"] ],
+    "Monaco" : [[5,  ">"],
+        [15, "<"],
+        [17, ">"],
+        [19, "<"],
+        [32, ">"],
+        [35, "<"],
+        [37, ">"],
+        [42, ">"],
+        [47, "<"],
+        [55, "<"],
+        [58, "<"],
+        [63, ">"],
+        [66, "<"],
+        [70, ">"],
+        [75, ">"],
+        [81, "<"],
+        [86, "<"],
+        [93, ">"],
+        [96, "<"],
+        [102, "F"] ],
+    "Silverstone" : [   [5,  ">"],
+        [15, "<"],
+        [17, ">"],
+        [19, "<"],
+        [32, ">"],
+        [35, "<"],
+        [37, ">"],
+        [42, ">"],
+        [47, "<"],
+        [55, "<"],
+        [58, "<"],
+        [63, ">"],
+        [66, "<"],
+        [70, ">"],
+        [75, ">"],
+        [81, "<"],
+        [86, "<"],
+        [93, ">"],
+        [96, "<"],
+        [102, "F"] ]
+    }
+
 
 # Clear the screen
 def clear_screen(background="black"):
@@ -70,7 +134,7 @@ def time_user(side,max_time):
     display.set_pen(255, 255, 255)
     display.text(time_text, 50, 30, 240, 4)
     display.update()
-    utime.sleep(1)  # Pause to read reaction time
+    utime.sleep_ms(500)  # Pause to read reaction time
     return reaction_time
     
     
@@ -94,8 +158,6 @@ def start(lap_timer, max_time):
     # Click the correct side to "Go"
     display.set_pen(0, 255, 0)  # Green for GO
     # Pick side randomly for the start button, indicated by GO
-    #sides = ["<",">"]
-    #chosen_side = sides[int(math.fmod(utime.ticks_ms(), 2))]
     side = random.choice(["<",">"])
     if side == "<":
         display.text("G0", 20, 105, 240, 2)
@@ -111,29 +173,35 @@ def start(lap_timer, max_time):
     
 def next_turn(lap_timer, max_time, direction, lead_time):
     clear_screen()
-    utime.sleep_ms(500)
+    utime.sleep_ms(250)  # Small pause for transition
+    
     # Show straight-ahead until a turn
     display.set_pen(255, 255, 0)
+    display.text("^", 118, 22, 240, 4)
+    display.text("/\\", 110, 30, 240, 4)
     display.text("^", 118, 42, 240, 4)
     display.text("/\\", 110, 50, 240, 4)
-    #display.text("", 110, 70, 240, 4)
     display.update()
-    # Prepare the turn
-    display.set_pen(0, 0, 0)
-    display.clear()  # Chosen to not clear screen immediately
+    # Leave straight-ahead on screen for the length of the straight
+    utime.sleep(lead_time)
+
+    # Clear screen, small pause for transistion
+    clear_screen()
+    utime.sleep_ms(250)
+    
+    # Prepare large chevrons indicating turn direction
     turn_text = direction * 3
-    # Display large chevrons indicating turn direction
     display.set_pen(255, 255, 255)
     display.text(turn_text, 100, 50, 240, 4)
-    # Label correct key with chevrons for the turn
+    # Prepare correct key, label with chevrons for the turn
     display.set_pen(0, 255, 0)
     if direction == "<":
         display.text(turn_text, 20, 105, 240, 2)
     else:
-        display.text(turn_text, 200, 105, 240, 2)
-    # Wait before displaying the chevrons, simulates waiting to arrive at the corner
-    utime.sleep(lead_time)
-    display.update()  # Show the turn direction now
+        display.text(turn_text, 200, 105, 240, 2)    
+    # Show the turn direction now
+    display.update()
+    
     # Time the user's reaction
     lap_timer += time_user(direction,max_time)
     return lap_timer
@@ -142,34 +210,67 @@ def next_turn(lap_timer, max_time, direction, lead_time):
 # Main Menu
 def menu():
     clear_screen()
+    max_tracks = 3
+    track_selected = 0
     display.set_pen(255, 255, 255)
     display.text("Select Track:", 20, 20, 240, 2)
-    display.text("  Spa", 20, 50, 240, 2)
-    display.text("  Monaco", 20, 70, 240, 2)
+    display.text("   Spa", 20, 40, 240, 2)
+    display.text("   Monaco", 20, 60, 240, 2)
+    display.text("   Silverstone", 20, 80, 240, 2)
+    display.set_pen(255, 255, 0)
+    display.text(">", 20, 40, 240, 2)  # Track selector, initial position
     display.set_pen(0, 255, 0)
     display.text("Start Game", 115, 105, 240, 2)
     display.update()
     while True:
         utime.sleep_ms(1)
+        track_change = False
+        display.set_pen(0, 0, 255)
+        
         if display.is_pressed(display.BUTTON_Y):
+            # Select current highlighted track
             break
-
+        elif display.is_pressed(display.BUTTON_A):
+            # Up
+            track_selected = int( math.fmod(track_selected + (max_tracks-1), max_tracks) )
+            track_change = True
+            utime.sleep_ms(250)
+        elif display.is_pressed(display.BUTTON_B):
+            # Down
+            track_selected = int( math.fmod(track_selected + 1, max_tracks) )
+            track_change = True
+            utime.sleep_ms(250)
+        if track_change:
+            for track in range(max_tracks):
+                if track == track_selected:
+                    display.set_pen(255, 255, 0)
+                    display.text(">", 20, 40 + (20 * track), 240, 2)  # Track selector
+                else:
+                    display.set_pen(0, 0, 0)
+                    display.text(">", 20, 40 + (20 * track), 240, 2)  # Remove track selector
+            display.update()
+            track_change = False  # Reset ready for next change
+    return track_selected
 
 ## Main Program
 while True:
+    track = 0
     lap_timer = 0
     max_time = 2000
     
     setup_screen()
     #intro()
-    menu()
+    track = menu()
     # Each race section adds time to the race_timer
     lap_timer = start(lap_timer, max_time)
     
-    ## Testing a single turn
-    lead_time = 5
-    direction = ">"
-    lap_timer = next_turn(lap_timer, max_time, direction, lead_time)
+    ## Testing a multiple turns
+    lap_timer = next_turn(lap_timer, max_time, ">", 5)
+    lap_timer = next_turn(lap_timer, max_time, "<", 10)
+    lap_timer = next_turn(lap_timer, max_time, ">", 2)
+    lap_timer = next_turn(lap_timer, max_time, "<", 2)
+    lap_timer = next_turn(lap_timer, max_time, ">", 13)
+    lap_timer = next_turn(lap_timer, max_time, "<", 3)
     ##
     
     clear_screen()
