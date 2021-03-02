@@ -1,11 +1,19 @@
 # Pico
-A few projects for the Raspberry Pi Pico microcontroller
+A few of my projects for the Raspberry Pi Pico microcontroller
 
 ---
 
 ## Pico F-Won
 
-A simple game using the Pico Display
+A simple low-graphics game using the Pico Display to simulate a race/racing lap.
+
+Features:
+ - Track Selection (WIP)
+ - Dificulty Setting (TBC)
+ - Racing Start
+ - Authentic Turn Timings (Taken from F1 pole laps)
+ - Finish Line (WIP)
+ - Final Lap Time and Delta (WIP)
 
 ---
 
