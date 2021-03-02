@@ -6,30 +6,6 @@ import picodisplay as display
 import random
 import utime
 
-
-# Tracks
-# track_list_old = {
-#     "Spa" : [
-#         [5,  ">"], [15, "<"], [17, ">"], [19, "<"], [32, ">"],
-#         [35, "<"], [37, ">"], [42, ">"], [47, "<"], [55, "<"],
-#         [58, "<"], [63, ">"], [66, "<"], [70, ">"], [75, ">"],
-#         [81, "<"], [86, "<"], [93, ">"], [96, "<"], [102, "F"]
-#         ],
-#     "Monaco" : [
-#         [3,  ">"], [9,  ">"], [12, "<"], [15, ">"], [20, ">"],
-#         [24, "<"], [28, ">"], [32, ">"], [38, ">"], [43, "<"],
-#         [45, ">"], [50, "<"], [52, "<"], [53, ">"], [55, ">"],
-#         [56, "<"], [58, "<"], [60, ">"], [64, ">"], [70, "F"]
-#         ],
-#     "Silverstone" : [
-#         [4,  ">"], [7,  "<"], [11, ">"], [15, "<"], [20, "<"],
-#         [28, "<"], [31, ">"], [39, ">"], [45, ">"], [52, "<"],
-#         [53, ">"], [55, "<"], [57, ">"], [59, "<"], [68, ">"],
-#         [76, "<"], [78, ">"], [82, ">"], [84, "F"]
-#         ]
-#     }
-
-
 track_list = [  [ "Spa", [ [5,  ">"], [15, "<"], [17, ">"], [19, "<"], [32, ">"],
                            [35, "<"], [37, ">"], [42, ">"], [47, "<"], [55, "<"],
                            [58, "<"], [63, ">"], [66, "<"], [70, ">"], [75, ">"],
@@ -103,9 +79,6 @@ def menu(track_list):
         track_name = track_list[track_num][0]
         track_text =  (" " * 3) + track_name
         display.text(track_text, 20, 40 + (20 * track_num), 240, 2)
-#     for track_num, track in enumerate(track_list):
-#         track_text =  (" " * 3) + track[0]  ## track[0] = Track name
-#         display.text(track_text, 20, 40 + (20 * track_num), 240, 2)
     display.set_pen(255, 255, 0)
     display.text(">", 20, 40, 240, 2)  # Track selector, initial position
     display.set_pen(0, 255, 0)
@@ -183,6 +156,7 @@ def start(lap_delta, max_reaction_time):
 
     # Click the correct side to "Go"
     display.set_pen(0, 255, 0)  # Green for GO
+#     display.circle(120, 50, 20)
     # Pick side randomly for the start button, indicated by GO
     side = random.choice(["<",">"])
     if side == "<":
@@ -199,12 +173,6 @@ def start(lap_delta, max_reaction_time):
     
 def straight(lead_time):
     clear_screen()
-    # Show straight-ahead until a turn
-#     display.set_pen(255, 255, 0)
-#     display.text("^", 118, 22, 240, 4)
-#     display.text("/\\", 110, 30, 240, 4)
-#     display.text("^", 118, 42, 240, 4)
-#     display.text("/\\", 110, 50, 240, 4)
     # Green circle for Go, straight-ahead until next turn
     display.set_pen(0, 255, 0)
     display.circle(120, 50, 20)
@@ -306,13 +274,11 @@ while True:
             time_to_line = time_to_turn  ## Set ready for finish line function
             break
 
-    lap_delta = 13.456
-    time_to_line = 5
     finish(lap_delta,time_to_line)
-    # Save final time = lap_delta???
+    # Save final time ???
     clear_screen()
-    utime.sleep(1)
-    break
+    utime.sleep(3)
+#     break
 
 display.set_backlight(0)
 
