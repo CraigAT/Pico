@@ -31,6 +31,9 @@ Features:
 
 ---
 
+Disclaimer : If you experience any issues please disconnect the Pico, reconnect and re-run the code.
+
+---
 
 ## Additional Useful Links:
 - [Raspberry Pi - Pico - Getting Started](https://www.raspberrypi.org/documentation/pico/getting-started/)
