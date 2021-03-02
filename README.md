@@ -19,7 +19,7 @@ Features:
 
  - Hold Pico Display in landscape mode with the RGB LED to the left
  - Admire the brief intro screen
- - Select a track from the menu
+ - Select a track from the menu using buttons A and B
  - From here on in your reaction times are being recorded
  - Watch the 5 red lights illuminate then go out after a random delay
  - Press the indicated button B or Y to get off the line
