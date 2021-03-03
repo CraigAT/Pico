@@ -1,5 +1,5 @@
 # Pico
-A few of my projects for the Raspberry Pi Pico microcontroller
+A few of my MicroPython projects for the Raspberry Pi Pico microcontroller
 
 ---
 
